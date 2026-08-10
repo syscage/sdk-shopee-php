@@ -1,0 +1,42 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Syscage\Sdk\Shopee\Tests\Unit\Http\Api\Returns;
+
+use GuzzleHttp\Psr7\Response;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
+use Syscage\Sdk\Shopee\Core\Http\Api\Returns\Shipping;
+use Syscage\Sdk\Shopee\Core\Http\Auth\AccessToken;
+use Syscage\Sdk\Shopee\Tests\Support\InteractsWithMockHttp;
+
+final class ShippingTest extends TestCase
+{
+    use InteractsWithMockHttp;
+
+    /**
+     * @return array<string, array{0: string, 1: string, 2: string, 3: array<string, mixed>}>
+     */
+    public static function endpoints(): array
+    {
+        return [
+            'getShippingCarrier' => ['getShippingCarrier', 'GET', '/api/v2/returns/get_shipping_carrier', ['return_sn' => '2504060QHMFPXW']],
+            'getReverseTrackingInfo' => ['getReverseTrackingInfo', 'GET', '/api/v2/returns/get_reverse_tracking_info', ['return_sn' => '2504060QHMFPXW']],
+            'uploadShippingProof' => ['uploadShippingProof', 'POST', '/api/v2/returns/upload_shipping_proof', ['return_sn' => '2504060QHMFPXW', 'reverse_logistics_carrier_id' => 1]],
+        ];
+    }
+
+    #[DataProvider('endpoints')]
+    public function testEndpointUsesExpectedHttpMethodAndPath(string $method, string $httpMethod, string $path, array $params): void
+    {
+        $client = $this->makeClient([
+            new Response(200, [], json_encode(['error' => '', 'message' => ''])),
+        ])->withAccessToken(new AccessToken('token', 'refresh', time() + 3600, shopId: 14701711));
+
+        (new Shipping($client))->{$method}($params);
+
+        $this->assertSame($httpMethod, $this->lastRequest()->getMethod());
+        $this->assertSame($path, $this->lastRequest()->getUri()->getPath());
+    }
+}

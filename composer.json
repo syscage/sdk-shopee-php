@@ -1,0 +1,57 @@
+{
+    "name": "syscage/sdk-shopee-php",
+    "description": "Framework-independent PHP SDK for the Shopee Open Platform.",
+    "version": "1.0.0",
+    "type": "library",
+    "license": "MIT",
+    "keywords": ["shopee", "shopee-open-platform", "sdk", "ecommerce"],
+    "require": {
+        "php": "^8.1",
+        "psr/http-client": "^1.0",
+        "psr/http-factory": "^1.0",
+        "psr/http-message": "^1.1 || ^2.0",
+        "guzzlehttp/guzzle": "^7.8"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.5",
+        "illuminate/contracts": "^10.0 || ^11.0 || ^12.0",
+        "illuminate/support": "^10.0 || ^11.0 || ^12.0",
+        "orchestra/testbench": "^8.0 || ^9.0 || ^10.0",
+        "symfony/config": "^6.4 || ^7.0 || ^8.0",
+        "symfony/dependency-injection": "^6.4 || ^7.0 || ^8.0",
+        "symfony/http-kernel": "^6.4 || ^7.0 || ^8.0"
+    },
+    "suggest": {
+        "illuminate/support": "Required to use the optional Laravel integration (Syscage\\Sdk\\Shopee\\Laravel\\ShopeeServiceProvider, Facade).",
+        "symfony/config": "Required to use the optional Symfony integration (Syscage\\Sdk\\Shopee\\Symfony\\ShopeeBundle).",
+        "symfony/dependency-injection": "Required to use the optional Symfony integration (Syscage\\Sdk\\Shopee\\Symfony\\ShopeeBundle).",
+        "symfony/http-kernel": "Required to use the optional Symfony integration (Syscage\\Sdk\\Shopee\\Symfony\\ShopeeBundle)."
+    },
+    "autoload": {
+        "psr-4": {
+            "Syscage\\Sdk\\Shopee\\": "src/",
+            "Syscage\\Sdk\\Shopee\\Laravel\\": "src/Framework/Laravel/",
+            "Syscage\\Sdk\\Shopee\\Symfony\\": "src/Framework/Symfony/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Syscage\\Sdk\\Shopee\\Tests\\": "tests/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Syscage\\Sdk\\Shopee\\Laravel\\ShopeeServiceProvider"
+            ],
+            "aliases": {
+                "Shopee": "Syscage\\Sdk\\Shopee\\Laravel\\Facades\\Shopee"
+            }
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true,
+    "config": {
+        "sort-packages": true
+    }
+}
